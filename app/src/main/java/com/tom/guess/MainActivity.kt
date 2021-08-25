@@ -2,9 +2,11 @@ package com.tom.guess
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 
 //Controller
 class MainActivity : AppCompatActivity() {
@@ -22,9 +24,19 @@ class MainActivity : AppCompatActivity() {
         val guessButton = findViewById<Button>(R.id.guessButton)
         val reset = findViewById<Button>(R.id.reset)
         guessButton.setOnClickListener {
-            val num = findViewById<EditText>(R.id.number)
-                .text.toString().toInt()
-            println(num)
+            val s = findViewById<EditText>(R.id.number)
+                .text.toString()
+            if (s.length == 0) {
+                AlertDialog.Builder(this)
+                    .setTitle("使用提示")
+                    .setMessage("請輸入1-10的數字")
+                        //Positive, Negative, Neutral
+                    .setPositiveButton("OK", null)
+                    .show()
+            } else {
+                val num = s.toInt()
+                Log.d("MainActivity", "num $num")
+            }
         }
         reset.setOnClickListener {
         }
