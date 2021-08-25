@@ -10,14 +10,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
+import java.util.*
 
 //Controller
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    var secret: Int = Random().nextInt(10)+1
+    var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "onCreate: secret is $secret")
         //view-binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -41,9 +45,23 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("OK", null)
                 .show()
         } else {
+            counter++
+            binding.times.text = counter.toString()
             try {
                 val num = s.toInt()
                 Log.d("MainActivity", "num $num")
+                val message = if (num > secret) {
+                    "小一點"
+                } else if (num < secret) {
+                    "大一點"
+                } else {
+                    "答對了"
+                }
+                AlertDialog.Builder(this)
+                    .setTitle("結果")
+                    .setMessage(message)
+                    .setPositiveButton("OK", null)
+                    .show()
             } catch (e: NumberFormatException) {
                 //message
             }
@@ -52,5 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     fun reset() {
         Log.d("MainActivity", "reset: ")
+        //作業，重完實作
     }
 }
