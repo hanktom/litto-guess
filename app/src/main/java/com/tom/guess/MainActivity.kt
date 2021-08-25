@@ -3,6 +3,7 @@ package com.tom.guess
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -22,10 +23,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //how to control views appearance
         val guessButton = findViewById<Button>(R.id.guessButton)
-        val reset = findViewById<Button>(R.id.reset)
+//        val reset = findViewById<Button>(R.id.reset)
         guessButton.setOnClickListener {
             val s = findViewById<EditText>(R.id.number)
                 .text.toString()
+            //作業，在使用者有輸入資料後，按鈕才 Enable
             if (s.length == 0) {
                 AlertDialog.Builder(this)
                     .setTitle("使用提示")
@@ -38,8 +40,11 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity", "num $num")
             }
         }
-        reset.setOnClickListener {
-        }
+//        reset.setOnClickListener {
+//        }
+    }
+    fun reset(view: View) {
+        Log.d("MainActivity", "reset: ")
     }
 
     fun test() {
