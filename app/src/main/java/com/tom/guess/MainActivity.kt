@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.tom.guess.databinding.ActivityMainBinding
+import java.lang.NumberFormatException
 
 //Controller
 class MainActivity : AppCompatActivity() {
@@ -20,14 +22,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //view-binding
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         //how to control views appearance
-        val guessButton = findViewById<Button>(R.id.guessButton)
-//        val reset = findViewById<Button>(R.id.reset)
-        guessButton.setOnClickListener {
-            val s = findViewById<EditText>(R.id.number)
-                .text.toString()
-            //作業，在使用者有輸入資料後，按鈕才 Enable
+        binding.guessButton.setOnClickListener {
+            val s = binding.number.text.toString()
+            //挑戰，在使用者有輸入資料後，按鈕才 Enable
             if (s.length == 0) {
                 AlertDialog.Builder(this)
                     .setTitle("使用提示")
@@ -36,10 +37,17 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("OK", null)
                     .show()
             } else {
-                val num = s.toInt()
-                Log.d("MainActivity", "num $num")
+                try {
+                    val num = s.toInt()
+                    Log.d("MainActivity", "num $num")
+                } catch(e: NumberFormatException) {
+                    //message
+                }
             }
         }
+        /*binding.reset.setOnClickListener {
+
+        }*/
 //        reset.setOnClickListener {
 //        }
     }
