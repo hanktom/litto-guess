@@ -3,10 +3,6 @@ package com.tom.guess
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
@@ -57,10 +53,13 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     "答對了"
                 }
+                //Lambda
                 AlertDialog.Builder(this)
                     .setTitle("結果")
                     .setMessage(message)
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton("OK"){ dialog, which ->
+                        binding.number.text.clear()
+                    }
                     .show()
             } catch (e: NumberFormatException) {
                 //message
