@@ -8,7 +8,7 @@ import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
 import java.util.*
 
-//Controller
+//不只是 Controller
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
