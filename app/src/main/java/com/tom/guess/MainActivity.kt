@@ -3,6 +3,7 @@ package com.tom.guess
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
@@ -12,15 +13,19 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    var secret: Int = Random().nextInt(10)+1
-    var counter = 0
+//    var secret: Int = Random().nextInt(10)+1
+//    var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MainActivity", "onCreate: secret is $secret")
+//        Log.d("MainActivity", "onCreate: secret is $secret")
         //view-binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val viewModel : GuessViewModel by viewModels()
+        viewModel.counterData.observe(this, androidx.lifecycle.Observer {
+            binding.times.text = it.toString()
+        })
         //how to control views appearance
         binding.guessButton.setOnClickListener {
             guess()
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("OK", null)
                 .show()
         } else {
-            counter++
+            /*counter++
             binding.times.text = counter.toString()
             try {
                 val num = s.toInt()
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } catch (e: NumberFormatException) {
                 //message
-            }
+            }*/
         }
     }
 
