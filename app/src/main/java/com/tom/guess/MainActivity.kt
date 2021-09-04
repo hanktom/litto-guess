@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
 import java.util.*
 
 //不只是 Controller
 class MainActivity : AppCompatActivity() {
-
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
     private lateinit var binding: ActivityMainBinding
 //    var secret: Int = Random().nextInt(10)+1
 //    var counter = 0
@@ -25,6 +28,20 @@ class MainActivity : AppCompatActivity() {
         val viewModel : GuessViewModel by viewModels()
         viewModel.counterData.observe(this, androidx.lifecycle.Observer {
             binding.times.text = it.toString()
+        })
+        viewModel.resultData.observe(this, androidx.lifecycle.Observer {
+            Log.d(TAG, "onCreate: result changed")
+            if (it == GuessViewModel.INIT) return@Observer
+            val message = when(it) {
+                GuessViewModel.BIGGER -> "Bigger"
+                GuessViewModel.SMALLER -> "Smaller"
+                else -> "You got it"
+            }
+            AlertDialog.Builder(this)
+                .setTitle("Result")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show()
         })
         //how to control views appearance
         binding.guessButton.setOnClickListener {
@@ -46,6 +63,8 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("OK", null)
                 .show()
         } else {
+            val viewModel : GuessViewModel by viewModels()
+            viewModel.guess(s.toInt())
             /*counter++
             binding.times.text = counter.toString()
             try {
