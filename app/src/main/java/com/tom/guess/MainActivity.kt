@@ -10,14 +10,14 @@ import com.tom.guess.databinding.ActivityMainBinding
 import java.lang.NumberFormatException
 import java.util.*
 
-//不只是 Controller
+//Controller
 class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG = MainActivity::class.java.simpleName
     }
     private lateinit var binding: ActivityMainBinding
-//    var secret: Int = Random().nextInt(10)+1
-//    var counter = 0
+    val data : Int by lazy { 3 }
+    val viewModel : GuessViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +25,15 @@ class MainActivity : AppCompatActivity() {
         //view-binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val viewModel : GuessViewModel by viewModels()
         viewModel.counterData.observe(this, androidx.lifecycle.Observer {
             binding.times.text = it.toString()
         })
         viewModel.resultData.observe(this, androidx.lifecycle.Observer {
             Log.d(TAG, "onCreate: result changed")
-            if (it == GuessViewModel.INIT) return@Observer
+            if (it == GameStatus.INIT) return@Observer
             val message = when(it) {
-                GuessViewModel.BIGGER -> "Bigger"
-                GuessViewModel.SMALLER -> "Smaller"
+                GameStatus.BIGGER -> "Bigger"
+                GameStatus.SMALLER -> "Smaller"
                 else -> "You got it"
             }
             AlertDialog.Builder(this)
@@ -63,31 +62,7 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("OK", null)
                 .show()
         } else {
-            val viewModel : GuessViewModel by viewModels()
             viewModel.guess(s.toInt())
-            /*counter++
-            binding.times.text = counter.toString()
-            try {
-                val num = s.toInt()
-                Log.d("MainActivity", "num $num")
-                val message = if (num > secret) {
-                    "小一點"
-                } else if (num < secret) {
-                    "大一點"
-                } else {
-                    "答對了"
-                }
-                //Lambda
-                AlertDialog.Builder(this)
-                    .setTitle("結果")
-                    .setMessage(message)
-                    .setPositiveButton("OK"){ dialog, which ->
-                        binding.number.text.clear()
-                    }
-                    .show()
-            } catch (e: NumberFormatException) {
-                //message
-            }*/
         }
     }
 
